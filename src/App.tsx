@@ -4,7 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { LanguageSelection } from "./components/LanguageSelection";
-import { WhatsAppButton } from "./components/WhatsAppButton";
+import { SocialButtons } from "./components/SocialButtons";
 import Index from "./pages/Index";
 import { ServicePage } from "./pages/ServicePage";
 
@@ -30,7 +30,7 @@ const App = () => (
           <Route path="/es/legal" element={<ServicePage service="legal" lang="es" />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-        <WhatsAppButton />
+        <SocialButtons />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
