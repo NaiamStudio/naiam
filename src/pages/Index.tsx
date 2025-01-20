@@ -5,8 +5,6 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -55,7 +53,6 @@ const Index = ({ lang = "en" }: { lang?: string }) => {
               : "Empowering your digital presence with innovative solutions"}
           </p>
           
-          {/* Service Tags */}
           <div className="flex justify-center gap-4 mt-8 flex-wrap">
             {services.map((service) => (
               <span
@@ -68,13 +65,18 @@ const Index = ({ lang = "en" }: { lang?: string }) => {
           </div>
         </section>
 
-        {/* Latest Updates Section */}
         <section className="py-16 px-4">
           <h2 className="text-3xl font-bold text-center mb-12 text-naiam-gray">
             {lang === "es" ? "Últimas Actualizaciones" : "Latest Updates"}
           </h2>
           <div className="max-w-5xl mx-auto">
-            <Carousel className="w-full">
+            <Carousel
+              opts={{
+                align: "start",
+                dragFree: true
+              }}
+              className="w-full"
+            >
               <CarouselContent className="-ml-2 md:-ml-4">
                 {updates.map((update, index) => (
                   <CarouselItem key={index} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3">
@@ -94,14 +96,11 @@ const Index = ({ lang = "en" }: { lang?: string }) => {
                   </CarouselItem>
                 ))}
               </CarouselContent>
-              <CarouselPrevious className="hidden md:flex" />
-              <CarouselNext className="hidden md:flex" />
             </Carousel>
           </div>
         </section>
       </main>
 
-      {/* Footer with Language Selection */}
       <footer className="py-8 bg-white/50 backdrop-blur-sm">
         <div className="container mx-auto px-4">
           <div className="flex flex-col items-center gap-4">

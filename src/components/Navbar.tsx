@@ -25,7 +25,7 @@ export const Navbar = ({ lang = "en" }: { lang?: string }) => {
                 {lang === "es" ? "Servicios" : "Services"}
               </NavigationMenuTrigger>
               <NavigationMenuContent>
-                <ul className="grid w-[90vw] max-w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                <ul className="flex flex-col w-[90vw] max-w-[280px] gap-2 p-4">
                   {services[lang].map((service) => (
                     <li key={service.title}>
                       <Link
