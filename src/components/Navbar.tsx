@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -8,6 +9,40 @@ import {
 } from "./ui/navigation-menu";
 
 export const Navbar = ({ lang = "en" }: { lang?: string }) => {
+  const [openService, setOpenService] = useState<string | null>(null);
+  const [openSubService, setOpenSubService] = useState<string | null>(null);
+  const [hoveredService, setHoveredService] = useState<string | null>(null);
+  const [hoveredSubService, setHoveredSubService] = useState<string | null>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (!target.closest('.navigation-menu')) {
+        setOpenService(null);
+        setOpenSubService(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleServiceClick = (serviceTitle: string) => {
+    setOpenService(prev => prev === serviceTitle ? null : serviceTitle);
+    setOpenSubService(null);
+  };
+
+  const handleSubServiceClick = (serviceTitle: string, subServiceTitle: string) => {
+    setOpenSubService(prev => prev === subServiceTitle ? null : subServiceTitle);
+    setOpenService(serviceTitle);
+  };
+
+  const isServiceOpen = (serviceTitle: string) => 
+    openService === serviceTitle || hoveredService === serviceTitle;
+
+  const isSubServiceOpen = (subServiceTitle: string) =>
+    openSubService === subServiceTitle || hoveredSubService === subServiceTitle;
+
   return (
     <nav className="w-full bg-black/80 backdrop-blur-sm fixed top-0 z-50">
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
@@ -18,42 +53,61 @@ export const Navbar = ({ lang = "en" }: { lang?: string }) => {
             className="w-12 h-12"
           />
         </Link>
-        <NavigationMenu>
+        <NavigationMenu className="navigation-menu">
           <NavigationMenuList>
             <NavigationMenuItem>
-              <NavigationMenuTrigger className="text-white bg-transparent hover:bg-transparent">
+              <NavigationMenuTrigger 
+                className="text-white bg-transparent hover:bg-transparent"
+                onMouseEnter={() => setHoveredService('services')}
+                onMouseLeave={() => setHoveredService(null)}
+                onClick={() => handleServiceClick('services')}
+              >
                 {lang === "es" ? "Servicios" : "Services"}
               </NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <ul className="flex flex-col w-[90vw] max-w-[280px] gap-2 p-4">
-                  {mainServices[lang].map((service) => (
-                    <NavigationMenuItem key={service.title}>
-                      <NavigationMenuTrigger className="w-full text-left bg-transparent hover:bg-accent">
-                        <div className="text-sm font-medium">{service.title}</div>
-                      </NavigationMenuTrigger>
-                      <NavigationMenuContent>
-                        <ul className="flex flex-col w-[90vw] max-w-[280px] gap-2 p-4 bg-white shadow-lg rounded-md">
-                          {service.subServices.map((subService) => (
-                            <li key={subService.title}>
-                              <Link
-                                to={`/${lang}/${service.path}/${subService.path}`}
-                                className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                              >
-                                <div className="text-sm font-medium leading-none">
-                                  {subService.title}
-                                </div>
-                                <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                                  {subService.description}
-                                </p>
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
-                      </NavigationMenuContent>
-                    </NavigationMenuItem>
-                  ))}
-                </ul>
-              </NavigationMenuContent>
+              {(isServiceOpen('services')) && (
+                <NavigationMenuContent>
+                  <ul className="flex flex-col w-[90vw] max-w-[280px] gap-2 p-4">
+                    {mainServices[lang].map((service) => (
+                      <NavigationMenuItem key={service.title}>
+                        <NavigationMenuTrigger 
+                          className="w-full text-left bg-transparent hover:bg-accent"
+                          onMouseEnter={() => setHoveredSubService(service.title)}
+                          onMouseLeave={() => setHoveredSubService(null)}
+                          onClick={() => handleSubServiceClick('services', service.title)}
+                        >
+                          <div className="text-sm font-medium">{service.title}</div>
+                        </NavigationMenuTrigger>
+                        {isSubServiceOpen(service.title) && (
+                          <NavigationMenuContent>
+                            <ul className="flex flex-col w-[90vw] max-w-[280px] gap-2 p-4 bg-white shadow-lg rounded-md">
+                              {service.subServices.map((subService) => (
+                                <li 
+                                  key={subService.title}
+                                  className="group relative"
+                                >
+                                  <Link
+                                    to={`/${lang}/${service.path}/${subService.path}`}
+                                    className="block select-none rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                                  >
+                                    <div className="text-sm font-medium leading-none">
+                                      {subService.title}
+                                    </div>
+                                  </Link>
+                                  <div className="absolute left-full top-0 ml-2 w-64 p-4 bg-white shadow-lg rounded-md opacity-0 group-hover:opacity-100 transition-opacity invisible group-hover:visible">
+                                    <p className="text-sm text-gray-600">
+                                      {subService.description}
+                                    </p>
+                                  </div>
+                                </li>
+                              ))}
+                            </ul>
+                          </NavigationMenuContent>
+                        )}
+                      </NavigationMenuItem>
+                    ))}
+                  </ul>
+                </NavigationMenuContent>
+              )}
             </NavigationMenuItem>
             <NavigationMenuItem>
               <Link
