@@ -26,19 +26,30 @@ export const Navbar = ({ lang = "en" }: { lang?: string }) => {
               </NavigationMenuTrigger>
               <NavigationMenuContent>
                 <ul className="flex flex-col w-[90vw] max-w-[280px] gap-2 p-4">
-                  {services[lang].map((service) => (
-                    <li key={service.title}>
-                      <Link
-                        to={`/${lang}/${service.path}`}
-                        className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                      >
-                        <div className="text-sm font-medium leading-none">
-                          {service.title}
-                        </div>
-                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                          {service.description}
-                        </p>
-                      </Link>
+                  {mainServices[lang].map((service) => (
+                    <li key={service.title} className="relative group">
+                      <NavigationMenuTrigger className="w-full text-left bg-transparent hover:bg-accent">
+                        <div className="text-sm font-medium">{service.title}</div>
+                      </NavigationMenuTrigger>
+                      <NavigationMenuContent>
+                        <ul className="flex flex-col w-[90vw] max-w-[280px] gap-2 p-4 bg-white shadow-lg rounded-md">
+                          {service.subServices.map((subService) => (
+                            <li key={subService.title}>
+                              <Link
+                                to={`/${lang}/${service.path}/${subService.path}`}
+                                className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                              >
+                                <div className="text-sm font-medium leading-none">
+                                  {subService.title}
+                                </div>
+                                <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                                  {subService.description}
+                                </p>
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </NavigationMenuContent>
                     </li>
                   ))}
                 </ul>
@@ -67,49 +78,207 @@ export const Navbar = ({ lang = "en" }: { lang?: string }) => {
   );
 };
 
-const services = {
+const mainServices = {
   en: [
     {
       title: "Design",
-      description: "Graphic design, branding, and visual identity services",
       path: "design",
+      subServices: [
+        {
+          title: "Vector Graphics",
+          description: "Professional vectorization of logos and graphics",
+          path: "vector",
+        },
+        {
+          title: "Logo Design",
+          description: "Custom logo design and branding solutions",
+          path: "logo",
+        },
+        {
+          title: "Signage Design",
+          description: "Creation of professional signage and banners",
+          path: "signage",
+        },
+        {
+          title: "Interactive Elements",
+          description: "Design of interactive digital elements",
+          path: "interactive",
+        },
+      ],
     },
     {
       title: "Development",
-      description: "Web and mobile application development",
       path: "development",
+      subServices: [
+        {
+          title: "Web Design",
+          description: "Custom website design and development",
+          path: "web-design",
+        },
+        {
+          title: "Website Maintenance",
+          description: "Ongoing website maintenance and updates",
+          path: "maintenance",
+        },
+        {
+          title: "CMS Integration",
+          description: "Content Management System implementation",
+          path: "cms",
+        },
+        {
+          title: "SEO Strategies",
+          description: "Search Engine Optimization services",
+          path: "seo",
+        },
+        {
+          title: "Analytics Integration",
+          description: "Google Analytics setup and monitoring",
+          path: "analytics",
+        },
+      ],
     },
     {
       title: "Marketing",
-      description: "Digital marketing and social media management",
       path: "marketing",
+      subServices: [
+        {
+          title: "Content Creation",
+          description: "Social media content creation and management",
+          path: "content",
+        },
+        {
+          title: "Metrics Analysis",
+          description: "Social media metrics and performance analysis",
+          path: "metrics",
+        },
+        {
+          title: "Follower Analysis",
+          description: "Audience profile and engagement analysis",
+          path: "followers",
+        },
+      ],
     },
     {
       title: "Legal",
-      description: "Legal services and business consulting",
       path: "legal",
+      subServices: [
+        {
+          title: "Custom Regulations Reports",
+          description: "Personalized regulatory compliance reports",
+          path: "regulations",
+        },
+        {
+          title: "Trademark Registration",
+          description: "Trademark registration consulting services",
+          path: "trademark",
+        },
+        {
+          title: "Business Entity Consulting",
+          description: "Commercial business structure consulting",
+          path: "business",
+        },
+      ],
     },
   ],
   es: [
     {
       title: "Diseño",
-      description: "Servicios de diseño gráfico, marca e identidad visual",
       path: "design",
+      subServices: [
+        {
+          title: "Vectorizaciones",
+          description: "Vectorización profesional de logos y gráficos",
+          path: "vector",
+        },
+        {
+          title: "Diseño de Logotipo",
+          description: "Diseño personalizado de logos y marca",
+          path: "logo",
+        },
+        {
+          title: "Elaboración de Cartelería",
+          description: "Creación de carteles y banners profesionales",
+          path: "signage",
+        },
+        {
+          title: "Elementos Interactivos",
+          description: "Diseño de elementos digitales interactivos",
+          path: "interactive",
+        },
+      ],
     },
     {
       title: "Desarrollo",
-      description: "Desarrollo de aplicaciones web y móviles",
       path: "development",
+      subServices: [
+        {
+          title: "Diseño Web",
+          description: "Diseño y desarrollo de sitios web personalizados",
+          path: "web-design",
+        },
+        {
+          title: "Mantenimiento",
+          description: "Mantenimiento y actualizaciones continuas",
+          path: "maintenance",
+        },
+        {
+          title: "Integración CMS",
+          description: "Implementación de sistemas de gestión de contenido",
+          path: "cms",
+        },
+        {
+          title: "Estrategias SEO",
+          description: "Servicios de optimización para motores de búsqueda",
+          path: "seo",
+        },
+        {
+          title: "Integración Analytics",
+          description: "Configuración y monitoreo de Google Analytics",
+          path: "analytics",
+        },
+      ],
     },
     {
       title: "Marketing",
-      description: "Marketing digital y gestión de redes sociales",
       path: "marketing",
+      subServices: [
+        {
+          title: "Creación de Contenido",
+          description: "Creación y gestión de contenido para redes sociales",
+          path: "content",
+        },
+        {
+          title: "Análisis de Métricas",
+          description: "Análisis de métricas y rendimiento en redes sociales",
+          path: "metrics",
+        },
+        {
+          title: "Análisis de Seguidores",
+          description: "Análisis de perfil de audiencia y engagement",
+          path: "followers",
+        },
+      ],
     },
     {
       title: "Legal",
-      description: "Servicios legales y consultoría empresarial",
       path: "legal",
+      subServices: [
+        {
+          title: "Informes de Normativas",
+          description: "Informes personalizados de cumplimiento normativo",
+          path: "regulations",
+        },
+        {
+          title: "Registro de Marca",
+          description: "Asesoría en registro de marcas",
+          path: "trademark",
+        },
+        {
+          title: "Asesoría en Sociedades",
+          description: "Consultoría en estructuras comerciales",
+          path: "business",
+        },
+      ],
     },
   ],
 };
