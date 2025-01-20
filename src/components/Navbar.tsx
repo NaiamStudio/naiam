@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -13,11 +13,11 @@ export const Navbar = ({ lang = "en" }: { lang?: string }) => {
   const [openSubService, setOpenSubService] = useState<string | null>(null);
   const [hoveredService, setHoveredService] = useState<string | null>(null);
   const [hoveredSubService, setHoveredSubService] = useState<string | null>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
-      if (!target.closest('.navigation-menu')) {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setOpenService(null);
         setOpenSubService(null);
       }
@@ -43,6 +43,20 @@ export const Navbar = ({ lang = "en" }: { lang?: string }) => {
   const isSubServiceOpen = (subServiceTitle: string) =>
     openSubService === subServiceTitle || hoveredSubService === subServiceTitle;
 
+  const handleServiceHover = (serviceTitle: string | null) => {
+    setHoveredService(serviceTitle);
+    if (!openService && serviceTitle) {
+      setOpenService(serviceTitle);
+    }
+  };
+
+  const handleSubServiceHover = (subServiceTitle: string | null) => {
+    setHoveredSubService(subServiceTitle);
+    if (subServiceTitle && hoveredService) {
+      setOpenService(hoveredService);
+    }
+  };
+
   return (
     <nav className="w-full bg-black/80 backdrop-blur-sm fixed top-0 z-50">
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
@@ -53,32 +67,38 @@ export const Navbar = ({ lang = "en" }: { lang?: string }) => {
             className="w-12 h-12"
           />
         </Link>
-        <NavigationMenu className="navigation-menu">
+        <NavigationMenu className="navigation-menu" ref={menuRef}>
           <NavigationMenuList>
             <NavigationMenuItem>
               <NavigationMenuTrigger 
                 className="text-white bg-transparent hover:bg-transparent"
-                onMouseEnter={() => setHoveredService('services')}
-                onMouseLeave={() => setHoveredService(null)}
+                onMouseEnter={() => handleServiceHover('services')}
+                onMouseLeave={() => handleServiceHover(null)}
                 onClick={() => handleServiceClick('services')}
               >
                 {lang === "es" ? "Servicios" : "Services"}
               </NavigationMenuTrigger>
               {(isServiceOpen('services')) && (
-                <NavigationMenuContent>
+                <NavigationMenuContent 
+                  onMouseEnter={() => handleServiceHover('services')}
+                  onMouseLeave={() => handleServiceHover(null)}
+                >
                   <ul className="flex flex-col w-[90vw] max-w-[280px] gap-2 p-4">
                     {mainServices[lang].map((service) => (
                       <NavigationMenuItem key={service.title}>
                         <NavigationMenuTrigger 
                           className="w-full text-left bg-transparent hover:bg-accent"
-                          onMouseEnter={() => setHoveredSubService(service.title)}
-                          onMouseLeave={() => setHoveredSubService(null)}
+                          onMouseEnter={() => handleSubServiceHover(service.title)}
+                          onMouseLeave={() => handleSubServiceHover(null)}
                           onClick={() => handleSubServiceClick('services', service.title)}
                         >
                           <div className="text-sm font-medium">{service.title}</div>
                         </NavigationMenuTrigger>
                         {isSubServiceOpen(service.title) && (
-                          <NavigationMenuContent>
+                          <NavigationMenuContent
+                            onMouseEnter={() => handleSubServiceHover(service.title)}
+                            onMouseLeave={() => handleSubServiceHover(null)}
+                          >
                             <ul className="flex flex-col w-[90vw] max-w-[280px] gap-2 p-4 bg-white shadow-lg rounded-md">
                               {service.subServices.map((subService) => (
                                 <li 
