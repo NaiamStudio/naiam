@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/carousel";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Footer } from "@/components/Footer";
 
 const Index = ({ lang = "en" }: { lang?: string }) => {
   const navigate = useNavigate();
@@ -108,7 +107,32 @@ const Index = ({ lang = "en" }: { lang?: string }) => {
           </div>
         </section>
       </main>
-      <Footer lang={lang} />
+
+      <footer className="py-8 bg-white/50 backdrop-blur-sm">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col items-center gap-4">
+            <div className="flex gap-4">
+              <Button
+                onClick={() => navigate("/en")}
+                variant="outline"
+                className="w-24 hover:bg-naiam-teal hover:text-white transition-colors"
+              >
+                EN
+              </Button>
+              <Button
+                onClick={() => navigate("/es")}
+                variant="outline"
+                className="w-24 hover:bg-naiam-teal hover:text-white transition-colors"
+              >
+                ES
+              </Button>
+            </div>
+            <p className="text-sm text-naiam-gray/60">
+              © 2024 Naiam. {lang === "es" ? "Todos los derechos reservados." : "All rights reserved."}
+            </p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
