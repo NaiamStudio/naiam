@@ -3,7 +3,6 @@ import {
   NavigationMenu,
   NavigationMenuContent,
   NavigationMenuItem,
-  NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "./ui/navigation-menu";
@@ -22,26 +21,24 @@ export const Navbar = ({ lang = "en" }: { lang?: string }) => {
         <NavigationMenu>
           <NavigationMenuList>
             <NavigationMenuItem>
-              <NavigationMenuTrigger className="text-white">
+              <NavigationMenuTrigger className="text-white bg-transparent hover:bg-transparent">
                 {lang === "es" ? "Servicios" : "Services"}
               </NavigationMenuTrigger>
               <NavigationMenuContent>
-                <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                <ul className="grid w-[90vw] max-w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
                   {services[lang].map((service) => (
                     <li key={service.title}>
-                      <NavigationMenuLink asChild>
-                        <Link
-                          to={`/${lang}/${service.path}`}
-                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                        >
-                          <div className="text-sm font-medium leading-none">
-                            {service.title}
-                          </div>
-                          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                            {service.description}
-                          </p>
-                        </Link>
-                      </NavigationMenuLink>
+                      <Link
+                        to={`/${lang}/${service.path}`}
+                        className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                      >
+                        <div className="text-sm font-medium leading-none">
+                          {service.title}
+                        </div>
+                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                          {service.description}
+                        </p>
+                      </Link>
                     </li>
                   ))}
                 </ul>
