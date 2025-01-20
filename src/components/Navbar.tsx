@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { ChevronDown } from "lucide-react";
 
 export const Navbar = ({ lang = "en" }: { lang?: string }) => {
+  const [isServicesOpen, setIsServicesOpen] = useState(false);
+
   return (
     <nav className="w-full bg-black/80 backdrop-blur-sm fixed top-0 z-50">
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
@@ -11,16 +15,32 @@ export const Navbar = ({ lang = "en" }: { lang?: string }) => {
             className="w-12 h-12"
           />
         </Link>
-        <div className="flex gap-6">
-          {mainServices[lang].map((service) => (
-            <Link
-              key={service.title}
-              to={`/${lang}/${service.path}`}
-              className="text-white hover:text-naiam-teal transition-colors"
+        <div className="flex gap-6 items-center relative">
+          <div
+            className="relative"
+            onMouseEnter={() => setIsServicesOpen(true)}
+            onMouseLeave={() => setIsServicesOpen(false)}
+          >
+            <button
+              className="text-white hover:text-naiam-teal transition-colors flex items-center gap-1"
             >
-              {service.title}
-            </Link>
-          ))}
+              {lang === "es" ? "Servicios" : "Services"}
+              <ChevronDown className="w-4 h-4" />
+            </button>
+            {isServicesOpen && (
+              <div className="absolute top-full left-0 mt-2 bg-white rounded-lg shadow-lg py-2 min-w-[200px]">
+                {mainServices[lang].map((service) => (
+                  <Link
+                    key={service.title}
+                    to={`/${lang}/${service.path}`}
+                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors"
+                  >
+                    {service.title}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
           <Link
             to={`/${lang}/about`}
             className="text-white hover:text-naiam-teal transition-colors"

@@ -7,6 +7,7 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const Index = ({ lang = "en" }: { lang?: string }) => {
   const navigate = useNavigate();
@@ -69,7 +70,13 @@ const Index = ({ lang = "en" }: { lang?: string }) => {
           <h2 className="text-3xl font-bold text-center mb-12 text-naiam-gray">
             {lang === "es" ? "Últimas Actualizaciones" : "Latest Updates"}
           </h2>
-          <div className="max-w-5xl mx-auto">
+          <div className="max-w-5xl mx-auto relative group">
+            <div className="absolute -left-12 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
+              <ChevronLeft className="w-8 h-8 text-naiam-gray" />
+            </div>
+            <div className="absolute -right-12 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
+              <ChevronRight className="w-8 h-8 text-naiam-gray" />
+            </div>
             <Carousel
               opts={{
                 align: "start",
