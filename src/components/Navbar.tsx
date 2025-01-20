@@ -11,8 +11,7 @@ import {
 export const Navbar = ({ lang = "en" }: { lang?: string }) => {
   const [openService, setOpenService] = useState<string | null>(null);
   const [openSubService, setOpenSubService] = useState<string | null>(null);
-  const [hoveredService, setHoveredService] = useState<string | null>(null);
-  const [hoveredSubService, setHoveredSubService] = useState<string | null>(null);
+  const [isMenuHovered, setIsMenuHovered] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -28,34 +27,28 @@ export const Navbar = ({ lang = "en" }: { lang?: string }) => {
   }, []);
 
   const handleServiceClick = (serviceTitle: string) => {
-    setOpenService(prev => prev === serviceTitle ? null : serviceTitle);
-    setOpenSubService(null);
-  };
-
-  const handleSubServiceClick = (serviceTitle: string, subServiceTitle: string) => {
-    setOpenSubService(prev => prev === subServiceTitle ? null : subServiceTitle);
-    setOpenService(serviceTitle);
-  };
-
-  const isServiceOpen = (serviceTitle: string) => 
-    openService === serviceTitle || hoveredService === serviceTitle;
-
-  const isSubServiceOpen = (subServiceTitle: string) =>
-    openSubService === subServiceTitle || hoveredSubService === subServiceTitle;
-
-  const handleServiceHover = (serviceTitle: string | null) => {
-    setHoveredService(serviceTitle);
-    if (!openService && serviceTitle) {
+    if (openService === serviceTitle) {
+      setOpenService(null);
+      setOpenSubService(null);
+    } else {
       setOpenService(serviceTitle);
     }
   };
 
-  const handleSubServiceHover = (subServiceTitle: string | null) => {
-    setHoveredSubService(subServiceTitle);
-    if (subServiceTitle && hoveredService) {
-      setOpenService(hoveredService);
+  const handleSubServiceClick = (serviceTitle: string, subServiceTitle: string) => {
+    if (openSubService === subServiceTitle) {
+      setOpenSubService(null);
+    } else {
+      setOpenService(serviceTitle);
+      setOpenSubService(subServiceTitle);
     }
   };
+
+  const isServiceOpen = (serviceTitle: string) => 
+    openService === serviceTitle || isMenuHovered;
+
+  const isSubServiceOpen = (subServiceTitle: string) =>
+    openSubService === subServiceTitle;
 
   return (
     <nav className="w-full bg-black/80 backdrop-blur-sm fixed top-0 z-50">
@@ -67,38 +60,33 @@ export const Navbar = ({ lang = "en" }: { lang?: string }) => {
             className="w-12 h-12"
           />
         </Link>
-        <NavigationMenu className="navigation-menu" ref={menuRef}>
+        <NavigationMenu 
+          className="navigation-menu" 
+          ref={menuRef}
+          onMouseEnter={() => setIsMenuHovered(true)}
+          onMouseLeave={() => setIsMenuHovered(false)}
+        >
           <NavigationMenuList>
             <NavigationMenuItem>
               <NavigationMenuTrigger 
                 className="text-white bg-transparent hover:bg-transparent"
-                onMouseEnter={() => handleServiceHover('services')}
-                onMouseLeave={() => handleServiceHover(null)}
                 onClick={() => handleServiceClick('services')}
               >
                 {lang === "es" ? "Servicios" : "Services"}
               </NavigationMenuTrigger>
-              {(isServiceOpen('services')) && (
-                <NavigationMenuContent 
-                  onMouseEnter={() => handleServiceHover('services')}
-                  onMouseLeave={() => handleServiceHover(null)}
-                >
+              {isServiceOpen('services') && (
+                <NavigationMenuContent>
                   <ul className="flex flex-col w-[90vw] max-w-[280px] gap-2 p-4">
                     {mainServices[lang].map((service) => (
                       <NavigationMenuItem key={service.title}>
                         <NavigationMenuTrigger 
                           className="w-full text-left bg-transparent hover:bg-accent"
-                          onMouseEnter={() => handleSubServiceHover(service.title)}
-                          onMouseLeave={() => handleSubServiceHover(null)}
                           onClick={() => handleSubServiceClick('services', service.title)}
                         >
                           <div className="text-sm font-medium">{service.title}</div>
                         </NavigationMenuTrigger>
                         {isSubServiceOpen(service.title) && (
-                          <NavigationMenuContent
-                            onMouseEnter={() => handleSubServiceHover(service.title)}
-                            onMouseLeave={() => handleSubServiceHover(null)}
-                          >
+                          <NavigationMenuContent>
                             <ul className="flex flex-col w-[90vw] max-w-[280px] gap-2 p-4 bg-white shadow-lg rounded-md">
                               {service.subServices.map((subService) => (
                                 <li 
