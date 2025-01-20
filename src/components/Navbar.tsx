@@ -27,7 +27,7 @@ export const Navbar = ({ lang = "en" }: { lang?: string }) => {
               <NavigationMenuContent>
                 <ul className="flex flex-col w-[90vw] max-w-[280px] gap-2 p-4">
                   {mainServices[lang].map((service) => (
-                    <li key={service.title} className="relative group">
+                    <NavigationMenuItem key={service.title}>
                       <NavigationMenuTrigger className="w-full text-left bg-transparent hover:bg-accent">
                         <div className="text-sm font-medium">{service.title}</div>
                       </NavigationMenuTrigger>
@@ -50,7 +50,7 @@ export const Navbar = ({ lang = "en" }: { lang?: string }) => {
                           ))}
                         </ul>
                       </NavigationMenuContent>
-                    </li>
+                    </NavigationMenuItem>
                   ))}
                 </ul>
               </NavigationMenuContent>
