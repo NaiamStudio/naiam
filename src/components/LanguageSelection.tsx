@@ -16,18 +16,18 @@ export const LanguageSelection = () => {
         <p className="text-xl text-white/90 mb-8">Soluciones Digitales</p>
         <div className="flex gap-4 justify-center">
           <Button
-            onClick={() => navigate("/en")}
-            variant="outline"
-            className="w-24 hover:bg-white hover:text-naiam-purple transition-colors"
-          >
-            EN
-          </Button>
-          <Button
             onClick={() => navigate("/es")}
             variant="outline"
             className="w-24 hover:bg-white hover:text-naiam-purple transition-colors"
           >
-            ES
+            ESPAÑOL
+          </Button>
+          <Button
+            onClick={() => navigate("/en")}
+            variant="outline"
+            className="w-24 hover:bg-white hover:text-naiam-purple transition-colors"
+          >
+            ENGLISH
           </Button>
         </div>
       </div>
