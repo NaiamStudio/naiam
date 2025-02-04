@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Navbar } from "@/components/Navbar";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -11,6 +12,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const Index = ({ lang = "en" }: { lang?: string }) => {
   const navigate = useNavigate();
+  const [imagesLoaded, setImagesLoaded] = useState(false);
   const updates = [
     {
       title: lang === "es" ? "Nuevos Paquetes de Servicio" : "New Service Packages",
@@ -42,10 +44,34 @@ const Index = ({ lang = "en" }: { lang?: string }) => {
     { name: lang === "es" ? "Legal" : "Legal", path: lang === "es" ? "/es/legal" : "/en/legal" }
   ];
 
+  useEffect(() => {
+    const imagePromises = updates.map(update => {
+      return new Promise<void>((resolve) => {
+        const img = new Image();
+        img.src = update.image;
+        img.onload = () => resolve();
+      });
+    });
+
+    Promise.all(imagePromises).then(() => {
+      setImagesLoaded(true);
+    });
+  }, [updates]);
+
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-white to-gray-100">
       <Navbar lang={lang} />
-      <main className="flex-grow pt-20 container mx-auto px-4">
+      {!imagesLoaded && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gradient-to-br from-white to-gray-100 z-50">
+          <div className="w-full h-1 bg-gray-200">
+            <div className="h-full bg-naiam-teal animate-pulse" style={{ width: "50%" }}></div>
+          </div>
+          <div className="loader animate-pulse">
+            {lang === "es" ? "Cargando..." : "Loading..."}
+          </div>
+        </div>
+      )}
+      <main className={`flex-grow pt-20 container mx-auto px-4 ${imagesLoaded ? '' : 'opacity-0'}`}>
         <section className="text-center py-20">
           <img
             src="/brand/naiam-logotype.png"
