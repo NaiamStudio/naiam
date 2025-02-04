@@ -79,12 +79,6 @@ const Index = ({ lang = "en" }: { lang?: string }) => {
             {lang === "es" ? "Últimas Actualizaciones" : "Latest Updates"}
           </h2>
           <div className="max-w-5xl mx-auto relative group">
-            <div className="absolute -left-12 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
-              <ChevronLeft className="w-8 h-8 text-naiam-gray" />
-            </div>
-            <div className="absolute -right-12 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
-              <ChevronRight className="w-8 h-8 text-naiam-gray" />
-            </div>
             <Carousel
               opts={{
                 align: "start",
