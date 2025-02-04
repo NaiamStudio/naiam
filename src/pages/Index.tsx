@@ -62,13 +62,11 @@ const Index = ({ lang = "en" }: { lang?: string }) => {
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-white to-gray-100">
       <Navbar lang={lang} />
       {!imagesLoaded && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gradient-to-br from-white to-gray-100 z-50">
-          <div className="w-full h-1 bg-gray-200">
-            <div className="h-full bg-naiam-teal animate-pulse" style={{ width: "50%" }}></div>
-          </div>
-          <div className="loader animate-pulse">
+        <div className="fixed inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-white to-gray-100 z-50">
+            <div className="loader animate-pulse mb-16 text-3xl font-bold text-gray-700">
             {lang === "es" ? "Cargando..." : "Loading..."}
-          </div>
+            </div>
+            <div className="w-16 h-16 border-4 border-t-4 border-t-transparent border-naiam-teal rounded-full animate-spin"></div>
         </div>
       )}
       <main className={`flex-grow pt-20 container mx-auto px-4 ${imagesLoaded ? '' : 'opacity-0'}`}>
