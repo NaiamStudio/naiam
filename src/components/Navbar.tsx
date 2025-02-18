@@ -46,12 +46,12 @@ export const Navbar = ({ lang = "en" }: { lang?: string }) => {
               <ChevronDown className="w-4 h-4" />
             </button>
             {isServicesOpen && (
-              <div className="absolute top-full left-0 mt-2 bg-white rounded-lg shadow-lg py-2 min-w-[200px]">
+              <div className="absolute top-full left-0 mt-2 bg-white rounded-lg shadow-lg py-2 min-w-[160px] md:min-w-[200px]">
                 {mainServices[lang].map((service) => (
                   <Link
                     key={service.title}
                     to={`/${lang}/${service.path}`}
-                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors"
+                    className="block px-3 py-1.5 md:px-4 md:py-2 text-sm md:text-base text-gray-700 hover:bg-gray-100 transition-colors"
                     onClick={() => setIsServicesOpen(false)}
                   >
                     {service.title}
