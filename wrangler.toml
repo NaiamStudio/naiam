@@ -1,0 +1,5 @@
+name = "Naiam"
+type = "javascript"
+
+[build]
+command = "npm run build"
